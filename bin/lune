@@ -1,0 +1,12 @@
+#!/usr/bin/env lua
+
+lune = require('lune')
+
+local filename = arg[1]
+local fh = assert(io.open(filename))
+local input = fh:read'*a'
+fh:close()
+
+p(lune.parse(input))
+lune.eval(input)
+
