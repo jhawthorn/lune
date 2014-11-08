@@ -22,8 +22,6 @@ local function emit(name)
   end
 end
 
-local num = R"09"^1 / p;
-
 local newline = P"\r"^-1 * P"\n";
 local stop = newline + -1;
 local space = S" \t"^0;
