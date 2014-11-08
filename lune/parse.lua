@@ -46,8 +46,11 @@ local tokens = P {
   assignment = Ct(V"identifier") * space * P"=" * space * Ct(V"expression") / emit("assignment");
 
   expression = space * V"value" * space;
+  explist = space * V"value" * (space * P"," * space * V"value")^0 * space;
 
-  value = V"number" + V"identifier" + V"func";
+  simplevalue = V"number" + V"identifier" + V"func";
+  value = V"chain" + V"simplevalue";
+  chain = V"simplevalue" * P"(" * V"explist"^-1 * P")" / emit("call");
 
   number = R"09"^1 / emit("number");
 
