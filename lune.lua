@@ -1,10 +1,4 @@
 
--- some global helpers
-inspect = require('lib.inspect')
-function p(...)
-  print(inspect(...))
-end
-
 local lune = {
   parse = require('lune.parse');
   compile_ast = require('lune.compile');
