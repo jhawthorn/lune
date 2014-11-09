@@ -6,6 +6,13 @@ describe("Parser", function()
     assert.are.same({{"number", "42"}}, ast)
   end)
 
+  describe("assignment", function()
+    it("can parse simple assignment", function()
+      local ast = parse("foo = 123")
+      assert.are.same({{"assignment", {{"identifier", "foo"}}, {{"number", "123"}}}}, ast)
+    end)
+  end)
+
   describe("function", function()
     it("can parse empty function", function()
       local ast = parse("->")
