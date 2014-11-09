@@ -40,6 +40,10 @@ local compilers = {
     return lua
   end;
 
+  table = function(node)
+    return "{}"
+  end;
+
   call = function(node)
     local s = ""
     s = s .. compile({node[2]})
