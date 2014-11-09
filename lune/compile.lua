@@ -2,8 +2,8 @@
 local compile
 local compilers = {
   assignment = function(token)
-    _, lhs, rhs = unpack(token)
-    lua = ''
+    local _, lhs, rhs = unpack(token)
+    local lua = ''
     for i=1,#lhs do
       lua = lua .. compile({lhs[i]}) .. "=" .. compile({rhs[i]}) .. "\n"
     end
@@ -41,11 +41,11 @@ local compilers = {
 compile = function(tokens)
   local lua = ""
   for i,token in ipairs(tokens) do
-    compiler = compilers[token[1]]
+    local compiler = compilers[token[1]]
     if not compiler then
       error("No compiler defined for " .. token[1])
     end
-    val = compiler(token)
+    local val = compiler(token)
     if not val then
       error("Error: couldn't compile " .. inspect(token))
     end
