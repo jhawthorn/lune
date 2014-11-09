@@ -6,6 +6,11 @@ describe("Parser", function()
     assert.are.same({{"number", "42"}}, ast)
   end)
 
+  it("can parse empty function", function()
+    local ast = parse("->")
+    assert.are.same({{"func", {}}}, ast)
+  end)
+
   it("can parse function", function()
     local ast = parse("-> 123")
     assert.are.same({{"func", {"number", "123"}}}, ast)

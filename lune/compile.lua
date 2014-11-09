@@ -1,3 +1,5 @@
+-- for errors
+local inspect = require('lib.inspect')
 
 local compile
 local compilers = {
@@ -19,7 +21,11 @@ local compilers = {
   end;
 
   func = function(token)
-    return "function()\nreturn " .. compile({token[2]}) .. "\nend\n"
+    if #token[2] == 0 then
+      return "function()\nend\n"
+    else
+      return "function()\nreturn " .. compile({token[2]}) .. "\nend\n"
+    end
   end;
 
   call = function(node)
@@ -43,7 +49,7 @@ compile = function(tokens)
   for i,token in ipairs(tokens) do
     local compiler = compilers[token[1]]
     if not compiler then
-      error("No compiler defined for " .. token[1])
+      error("No compiler defined for " .. inspect(token))
     end
     local val = compiler(token)
     if not val then

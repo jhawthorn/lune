@@ -56,13 +56,17 @@ local tokens = P {
 
   identifier = (R("az", "AZ", "__") * alphanum^0) / emit"identifier";
 
-  func = P"->" * space * V"statement" / emit"func";
+  func = P"->" * space * (V"statement" + Ct"") / emit"func";
 
   call = V"value" * P"()";
 }
 
 local function parse(input)
-  return tokens:match(input)
+  local ret = tokens:match(input)
+  if not ret then
+    error("couldn't compile input \"" .. input .. "\"")
+  end
+  return ret
 end
 
 return parse
