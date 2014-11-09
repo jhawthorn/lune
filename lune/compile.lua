@@ -21,6 +21,21 @@ local compilers = {
   func = function(token)
     return "function()\nreturn " .. compile({token[2]}) .. "\nend\n"
   end;
+
+  call = function(node)
+    local s = ""
+    s = s .. compile({node[2]})
+    s = s .. "("
+    local arguments = {}
+    for i = 3,#node do
+      local argument = compile({node[i]})
+      table.insert(arguments, argument)
+    end
+    s = s .. table.concat(arguments, ",")
+    s = s .. ")"
+    return s
+  end;
+
 }
 
 compile = function(tokens)
