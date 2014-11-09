@@ -60,7 +60,9 @@ local tokens = P {
 
   identifier = (R("az", "AZ", "__") * alphanum^0) / emit"identifier";
 
-  func = P"->" * space * (V"statement" + Ct"") / emit"func";
+  func = Ct(V"fnargs") * P"->" * space * (V"statement" + Ct"") / emit"func";
+  fnargs = P"(" * space * V"namelist"^-1 * P")"* space + P"";
+  namelist = V"identifier" * space * (P"," * space * V"identifier" * space)^0;
 
   call = V"value" * P"()";
 }
