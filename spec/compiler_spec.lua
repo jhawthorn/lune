@@ -6,6 +6,18 @@ describe("Compiler", function()
     assert.are.equal("42", lua)
   end)
 
+  describe("string", function()
+    it("can compile empty", function()
+      local lua = compile({{"string", ""}})
+      assert.are.same("''", lua)
+    end)
+
+    it("can compile simple", function()
+      local lua = compile({{"string", "123"}})
+      assert.are.same("'123'", lua)
+    end)
+  end)
+
   describe("function", function()
     it("can compile with no body", function()
       local lua = compile({{"func", {}}})

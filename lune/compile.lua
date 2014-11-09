@@ -20,6 +20,10 @@ local compilers = {
     return token[2]
   end;
 
+  string = function(node)
+    return "'" .. node[2] .. "'";
+  end;
+
   func = function(token)
     if #token[2] == 0 then
       return "function()\nend\n"
