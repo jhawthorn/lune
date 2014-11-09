@@ -43,14 +43,17 @@ local tokens = P {
 
   statement = V"assignment" + V"expression";
 
-  assignment = Ct(V"identifier") * space * P"=" * space * Ct(V"expression") / emit("assignment");
+  assignment = Ct(V"assignable") * space * P"=" * space * Ct(V"expression") / emit("assignment");
+  assignable = V"chaindot" + V"identifier";
 
   expression = space * V"value" * space;
   explist = space * V"value" * (space * P"," * space * V"value")^0 * space;
 
   simplevalue = V"number" + V"string" + V"identifier" + V"func" + V"table";
   value = V"chain" + V"simplevalue";
-  chain = V"simplevalue" * P"(" * V"explist"^-1 * P")" / emit("call");
+  chain = V"chaincall" + V"chaindot";
+  chaindot = V"simplevalue" * P"." * V"identifier" / emit("dot");
+  chaincall = V"simplevalue" * P"(" * V"explist"^-1 * P")" / emit("call");
 
   number = R"09"^1 / emit("number");
 

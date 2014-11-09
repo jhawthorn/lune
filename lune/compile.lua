@@ -24,6 +24,12 @@ local compilers = {
     return "'" .. node[2] .. "'";
   end;
 
+  dot = function(node)
+    assert(node[3][1] == "identifier")
+    lua = compile({node[2]}) .. "." .. node[3][2]
+    return lua
+  end;
+
   func = function(node)
     local _, args, body = unpack(node)
     local arguments = {}

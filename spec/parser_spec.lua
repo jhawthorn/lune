@@ -11,6 +11,18 @@ describe("Parser", function()
       local ast = parse("foo = 123")
       assert.are.same({{"assignment", {{"identifier", "foo"}}, {{"number", "123"}}}}, ast)
     end)
+
+    it("can parse dot assignment", function()
+      local ast = parse("foo.bar = 123")
+      assert.are.same({{"assignment", {{"dot", {"identifier", "foo"}, {"identifier", "bar"}}}, {{"number", "123"}}}}, ast)
+    end)
+  end)
+
+  describe("dot", function()
+    it("can parse dot", function()
+      local ast = parse("foo.bar")
+      assert.are.same({{"dot", {"identifier", "foo"}, {"identifier", "bar"}}}, ast)
+    end)
   end)
 
   describe("function", function()

@@ -18,6 +18,13 @@ describe("Compiler", function()
     end)
   end)
 
+  describe("dot", function()
+    it("can compile dot", function()
+      local lua = compile({{"dot", {"identifier", "foo"}, {"identifier", "bar"}}})
+      assert.are.same("foo.bar", lua)
+    end)
+  end)
+
   describe("function", function()
     it("can compile with no body", function()
       local lua = compile({{"func", {}, {}}})
