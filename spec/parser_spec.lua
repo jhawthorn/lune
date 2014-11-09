@@ -33,6 +33,13 @@ describe("Parser", function()
     end)
   end)
 
+  describe("table", function()
+    it("can parse empty table", function()
+      local ast = parse("{}")
+      assert.are.same({{"table", {}}}, ast)
+    end)
+  end)
+
   describe("double quote string", function()
     it("can parse empty string", function()
       local ast = parse('""')

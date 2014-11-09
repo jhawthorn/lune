@@ -48,11 +48,13 @@ local tokens = P {
   expression = space * V"value" * space;
   explist = space * V"value" * (space * P"," * space * V"value")^0 * space;
 
-  simplevalue = V"number" + V"string" + V"identifier" + V"func";
+  simplevalue = V"number" + V"string" + V"identifier" + V"func" + V"table";
   value = V"chain" + V"simplevalue";
   chain = V"simplevalue" * P"(" * V"explist"^-1 * P")" / emit("call");
 
   number = R"09"^1 / emit("number");
+
+  table = P"{" * Ct("") * "}" / emit("table");
 
   string = V"singlestring" + V"doublestring";
   singlestring = P"'" * C((1 - P"'")^0) * P"'" / emit("string");
