@@ -1,12 +1,22 @@
 #!/usr/bin/env lua
 
 lune = require('lune')
+local inspect = require('lib.inspect')
 
 local filename = arg[1]
-local fh = assert(io.open(filename))
-local input = fh:read'*a'
-fh:close()
+if filename then
+  local fh = assert(io.open(filename))
+  local input = fh:read'*a'
+  fh:close()
 
-p(lune.parse(input))
-lune.eval(input)
+  lune.eval(input)
+else
+  while true do
+    io.write("> ")
+    local line = io.read()
+    if line == nil then break end
+    print(lune.compile(line))
+    lune.eval(line)
+  end
+end
 
