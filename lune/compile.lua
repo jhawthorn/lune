@@ -24,12 +24,20 @@ local compilers = {
     return "'" .. node[2] .. "'";
   end;
 
-  func = function(token)
-    if #token[2] == 0 then
-      return "function()\nend\n"
-    else
-      return "function()\nreturn " .. compile({token[2]}) .. "\nend\n"
+  func = function(node)
+    local _, args, body = unpack(node)
+    local arguments = {}
+    for i, v in ipairs(args) do
+      assert(v[1] == "identifier")
+      table.insert(arguments, v[2])
     end
+
+    local lua = "function(" .. table.concat(arguments, ",") .. ")\n"
+    if #body > 0 then
+      lua = lua .. "return " .. compile({body}) .. "\n"
+    end
+    lua = lua .. "end\n"
+    return lua
   end;
 
   call = function(node)

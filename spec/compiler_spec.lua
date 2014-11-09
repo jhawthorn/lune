@@ -20,13 +20,23 @@ describe("Compiler", function()
 
   describe("function", function()
     it("can compile with no body", function()
-      local lua = compile({{"func", {}}})
+      local lua = compile({{"func", {}, {}}})
       assert.are.same("function()\nend\n", lua)
     end)
 
     it("can compile function", function()
-      local lua = compile({{"func", {"number", "123"}}})
+      local lua = compile({{"func", {}, {"number", "123"}}})
       assert.are.same("function()\nreturn 123\nend\n", lua)
+    end)
+
+    it("can compile function with argument", function()
+      local lua = compile({{"func", {{"identifier", "val"}}, {"number", "123"}}})
+      assert.are.same("function(val)\nreturn 123\nend\n", lua)
+    end)
+
+    it("can compile function with two arguments", function()
+      local lua = compile({{"func", {{"identifier", "a"}, {"identifier", "b"}}, {"number", "123"}}})
+      assert.are.same("function(a,b)\nreturn 123\nend\n", lua)
     end)
   end)
 
