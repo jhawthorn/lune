@@ -64,6 +64,13 @@ local compilers = {
     return s
   end;
 
+  ret = function(node)
+    local list = {}
+    for i, v in ipairs(node[2]) do
+      table.insert(list, compile({v}))
+    end
+    return "return " .. table.concat(list, ",")
+  end;
 }
 
 compile = function(tokens)
