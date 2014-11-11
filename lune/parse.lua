@@ -49,7 +49,7 @@ local tokens = P {
 
   line = (V"statement" + space) * V"comment"^-1 * #stop;
 
-  statement = V"assignment" + V"expression";
+  statement = V"ret" + V"assignment" + V"expression";
 
   assignment = Ct(V"assignable") * space * P"=" * space * Ct(V"expression") / emit("assignment");
   assignable = V"chain" + V"identifier";
@@ -78,6 +78,8 @@ local tokens = P {
   namelist = V"identifier" * space * (P"," * space * V"identifier" * space)^0;
 
   call = V"value" * P"()";
+
+  ret = P"return" * space * V"explist" / emit("ret");
 }
 
 local function parse(input)

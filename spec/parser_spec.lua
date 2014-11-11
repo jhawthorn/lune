@@ -27,6 +27,18 @@ describe("Parser", function()
     end)
   end)
 
+  describe("return", function()
+    it("can return void", function()
+      local ast = parse("return")
+      assert.are.same({{"ret", {}}}, ast)
+    end)
+
+    it("can return immediate", function()
+      local ast = parse("return 123")
+      assert.are.same({{"ret", {{"number", "123"}}}}, ast)
+    end)
+  end)
+
   describe("function", function()
     it("can parse empty function", function()
       local ast = parse("->")
