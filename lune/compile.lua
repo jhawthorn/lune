@@ -2,6 +2,15 @@
 local inspect = require('lib.inspect')
 
 local compile
+
+local function compile_explist(input)
+  local list = {}
+  for i, v in ipairs(input) do
+    table.insert(list, compile({v}))
+  end
+  return table.concat(list, ",")
+end
+
 local compilers = {
   assignment = function(token)
     local _, lhs, rhs = unpack(token)
@@ -32,13 +41,7 @@ local compilers = {
 
   func = function(node)
     local _, args, body = unpack(node)
-    local arguments = {}
-    for i, v in ipairs(args) do
-      assert(v[1] == "identifier")
-      table.insert(arguments, v[2])
-    end
-
-    local lua = "function(" .. table.concat(arguments, ",") .. ")\n"
+    local lua = "function(" .. compile_explist(args) .. ")\n"
     if #body > 0 then
       lua = lua .. "return " .. compile({body}) .. "\n"
     end
@@ -54,22 +57,13 @@ local compilers = {
     local s = ""
     s = s .. compile({node[2]})
     s = s .. "("
-    local arguments = {}
-    for i,v in ipairs(node[3]) do
-      local argument = compile({v})
-      table.insert(arguments, argument)
-    end
-    s = s .. table.concat(arguments, ",")
+    s = s .. compile_explist(node[3])
     s = s .. ")"
     return s
   end;
 
   ret = function(node)
-    local list = {}
-    for i, v in ipairs(node[2]) do
-      table.insert(list, compile({v}))
-    end
-    return "return " .. table.concat(list, ",")
+    return "return " .. compile_explist(node[2])
   end;
 }
 
