@@ -22,6 +22,14 @@ local function emit(name)
   end
 end
 
+local function nest_chain(base, chain)
+  for i,v in ipairs(chain) do
+    table.insert(v, 2, base)
+    base = v
+  end
+  return base
+end
+
 local newline = P"\r"^-1 * P"\n";
 local stop = newline + -1;
 local space = S" \t"^0;
@@ -44,16 +52,16 @@ local tokens = P {
   statement = V"assignment" + V"expression";
 
   assignment = Ct(V"assignable") * space * P"=" * space * Ct(V"expression") / emit("assignment");
-  assignable = V"chaindot" + V"identifier";
+  assignable = V"chain" + V"identifier";
 
   expression = space * V"value" * space;
-  explist = space * V"value" * (space * P"," * space * V"value")^0 * space;
+  explist = (Ct(space * V"value" * (space * P"," * space * V"value")^0) + Ct"") * space;
 
   simplevalue = V"number" + V"string" + V"identifier" + V"func" + V"table";
   value = V"chain" + V"simplevalue";
-  chain = V"chaincall" + V"chaindot";
-  chaindot = V"simplevalue" * P"." * V"identifier" / emit("dot");
-  chaincall = V"simplevalue" * P"(" * V"explist"^-1 * P")" / emit("call");
+  chain = (V"simplevalue" * Ct((V"chaincall" + V"chaindot")^1)) / nest_chain;
+  chaindot = P"." * V"identifier" / emit("dot");
+  chaincall = P"(" * V"explist" * P")" / emit("call");
 
   number = R"09"^1 / emit("number");
 
