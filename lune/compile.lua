@@ -55,8 +55,8 @@ local compilers = {
     s = s .. compile({node[2]})
     s = s .. "("
     local arguments = {}
-    for i = 3,#node do
-      local argument = compile({node[i]})
+    for i,v in ipairs(node[3]) do
+      local argument = compile({v})
       table.insert(arguments, argument)
     end
     s = s .. table.concat(arguments, ",")
