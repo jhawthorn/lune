@@ -1,16 +1,16 @@
+lune={}
+lune.parse=require('lune.parse')
+lune.compile_ast=require('lune.compile')
+lune.compile=function(string)
+return lune.compile_ast(lune.parse(string))
+end
 
-local lune = {
-  parse = require('lune.parse');
-  compile_ast = require('lune.compile');
-  compile = function(string)
-    return lune.compile_ast(assert(lune.parse(string)))
-  end;
-  loadstring = function(string)
-    return loadstring(assert(lune.compile(string)))
-  end;
-  eval = function(string)
-    assert(lune.loadstring(string))()
-  end
-}
+lune.loadstring=function(string)
+return loadstring(lune.compile(string))
+end
+
+lune.eval=function(string)
+return lune.loadstring(string)()
+end
 
 return lune

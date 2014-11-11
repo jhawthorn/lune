@@ -1,0 +1,9 @@
+
+lune = {}
+lune.parse = require('lune.parse')
+lune.compile_ast = require('lune.compile')
+lune.compile = (string) -> lune.compile_ast(lune.parse(string))
+lune.loadstring = (string) -> loadstring(lune.compile(string))
+lune.eval = (string) -> lune.loadstring(string)()
+return lune
+
